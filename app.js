@@ -61,7 +61,7 @@ app.use((error, req, res, next) => {
 //db connection
 mongoose.connect(process.env.DB)
     .then(() => {
-        app.listen(8080, ()=>{
+        app.listen(process.env.PORT, ()=>{
             console.log('Server started at port 8080');
         });
     })
