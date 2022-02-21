@@ -5,6 +5,8 @@ const isAuth = require('../middleware/isAuth');
 const router = express.Router();
 const CommentController = require('../controllers/comment.controller');
 
+router.get('/comments', CommentController.getComments)
+
 router.post('/comment', isAuth, [
     body('content').trim().not().isEmpty(),
     body('postId').trim().not().isEmpty()

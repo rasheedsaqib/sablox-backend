@@ -2,6 +2,12 @@ const CommentModel = require('../models/comments.model');
 const PostModel = require('../models/post.model');
 
 class Comment {
+    static getComments = () => {
+        return CommentModel.find()
+            .populate('user', 'firstName lastName about')
+            .exec();
+    }
+
     static addComment = (content, user, post) => {
         return new Promise((resolve, reject) => {
             let createdComment;

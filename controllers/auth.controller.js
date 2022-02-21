@@ -2,7 +2,26 @@ const {validationResult} = require("express-validator");
 const User = require('../services/user.service');
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-require('dotenv').config()
+require('dotenv').config();
+
+exports.getUsers = (req, res, next) => {
+    if(req.role !== 'Admin'){
+        const error = new Error('Unauthenticated request.');
+        error.statusCode = 422;
+        throw error;
+    }
+
+    User.getAll()
+        .then(users => {
+            res.status(200).json(users);
+        })
+        .catch(err => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
+        });
+}
 
 exports.signup = (req, res, next) => {
     const errors = validationResult(req);
@@ -26,6 +45,7 @@ exports.signup = (req, res, next) => {
             return User.addUser(req.body.firstName, req.body.lastName, req.body.email, req.body.phone, hashedPassword);
         })
         .then(result => {
+            result.password = undefined;
             res.status(201).json(result);
         })
         .catch(err => {
@@ -63,7 +83,7 @@ exports.signin = (req, res, next) => {
 
             loadedUser.password = undefined;
 
-            res.status(200).json({message: 'Sign in successful!', token: token, user: loadedUser});
+            res.status(200).json({message: 'Sign in successful!', token: token, user: loadedUser, expiresIn: 24*60*60});
         })
         .catch(err => {
             if (!err.statusCode) {

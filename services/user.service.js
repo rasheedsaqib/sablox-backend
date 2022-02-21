@@ -1,6 +1,11 @@
 const UserModal = require('../models/users.model');
 
 class User {
+
+    static getAll = () => {
+        return UserModal.find();
+    }
+
     static addUser = (firstName, lastName, email, phone, password) => {
         if(!phone){
             phone = null;

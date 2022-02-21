@@ -11,6 +11,7 @@ const AuthRoutes = require('./routes/auth.routes');
 const CategoryRoutes = require('./routes/category.routes');
 const PostRoutes = require('./routes/post.routes');
 const CommentRoutes = require('./routes/comment.routes');
+const ConstantRoutes = require('./routes/constants.routes');
 
 //app defined
 const app = express();
@@ -48,6 +49,7 @@ app.use('/api/', AuthRoutes);
 app.use('/api/', CategoryRoutes);
 app.use('/api/', PostRoutes);
 app.use('/api/', CommentRoutes);
+app.use('/api/', ConstantRoutes);
 
 app.use((error, req, res, next) => {
     const status = error.statusCode || 500;
